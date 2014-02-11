@@ -1,6 +1,5 @@
 <?php 
-require_once dirname(__FILE__).'/../commonsIncludePath.php';
-require_once 'COM_CONSTANTS.php';	
+namespace CompleteSolar\SugarClient;
 
 /**
  * SugarCRM REST API Class
@@ -25,8 +24,7 @@ class Sugar_REST {
 	* Description:	The URL of the SugarCRM REST API
 	* Example:	http://mydomain.com/sugarcrm/service/v2/rest.php
 	*/	
-	private $rest_url =  sugar_rest_url;     //value defined in CONSTANTS.php
-	
+	private $rest_url;
 	
 	/**
 	* Variable:	$username
@@ -34,13 +32,13 @@ class Sugar_REST {
 	*		you create a seperate SugarCRM User account
 	*		to make REST calls.
 	*/
-	private $username = username; //value defined in CONSTANTS.php
+	private $username;
 	
 	/**
 	* Variable:	$password
 	* Description:	The password for the $username SugarCRM account
 	*/
-	private $password =  password; //value defined in CONSTANTS.php
+	private $password;
 	
 	
 	////////////////////////////////////////
@@ -74,23 +72,8 @@ class Sugar_REST {
 	* Description:	Class constructor
 	* Returns:	TRUE on login success, otherwise FALSE
 	*/
-	function Sugar_REST($rest_url=null,$username=null,$password=null,$md5_password=true) 
-	{
-	    if (!is_null($rest_url))
-	    {
-	        $this->rest_url = $rest_url;
-	    }
-	    
-	    if (!is_null($username))
-	    {
-            $this->username = $username;
-	    }
-
-        if (!is_null($password))
-        {
-            $this->password = $password;
-        }
-		
+	function Sugar_REST($rest_url,$username,$password,$md5_password=true) 
+	{	
 		if($this->login($md5_password)) {
 			$this->logged_in = TRUE;
 			$data['session'] = $this->session;
