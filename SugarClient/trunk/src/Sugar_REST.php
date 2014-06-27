@@ -475,6 +475,31 @@ class Sugar_REST {
 
         return $result;
     }
+    
+    
+    /**
+     * Function:	createNote($subject, $text, $customerDocumenType, $leadId, $values = array())
+     * Parameters: 	$subject	= (string) subject of the note
+     *              $text = (string) note msg
+     *              $customerDocumenType 
+     *              $leadId - lead id
+     * Description:	create and add a note to a lead 
+     * Returns:	Id of the note created
+     */
+    public function createNote($subject, $note, $customerDocumenType, $leadId, $values = array()){
+        $values["name"]= $subject; //"test Note";
+        $values["customerdocumenttype_c"] = $customerDocumenType;//"sts_customer_message";//sts_employee_message;
+        $values["description"] = $note; //msg
+        $values["parent_id"] = $leadId;
+        $values["parent_type"] = "Leads";
+        $result = $this->set("Notes", $values);
+        $noteId = null;
+        if($result != null){
+           $noteId = $result["id"];
+        }
+        //print_r($result);
+        return $noteId;
+    }
 
     /**
      * Function:	get_note_attachment($note_id)
