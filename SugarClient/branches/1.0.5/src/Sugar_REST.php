@@ -369,13 +369,17 @@ class Sugar_REST {
         return $result;
     }
 
-    public function create_meeting_attach_to_lead($leadID, $subject, $startTime, $durationInMinutes, $meetingType, $meetingSetter,$description,$aptVerified){
-
-        //echo "Aida ".$leadID.", ". $subject.", ". $startTime.", ". $durationInMinutes.", ". $meetingType.", ". $description;
-        $strStartTime =  date('Y-m-d H:i:s', strtotime($startTime));            //$startTime->format('Y-m-d H:i:s');
+    public function create_meeting_attach_to_lead($leadID, 
+                                                  $subject, 
+                                                  $startTime, 
+                                                  $durationInMinutes, 
+                                                  $meetingType, 
+                                                  $meetingSetter, 
+                                                  $description, 
+                                                  $aptVerified, 
+                                                  $assigned_to = null){
+        $strStartTime =  date('Y-m-d H:i:s', strtotime($startTime));
         $endTime= date('Y-m-d H:i:s', strtotime($strStartTime ." + $durationInMinutes minute"));
-        //echo "<br>".$strStartTime.", ". $endTime;
-        //appointmentsetter_c
         $values=array(
                 'name'=> $subject,
                 'date_start' => $strStartTime,
@@ -389,12 +393,13 @@ class Sugar_REST {
                 'duration_hours'=>2,
                 'appointmentverified_c' => $aptVerified
         );
+        if (isset($assigned_to)){
+            $values['assigned_user_id'] = $assigned_to;
+        }
         $results = $this->set('Meetings', $values);
         $mtgId = $results["id"];
-        //echo " meetingId=".$mtgId;
-        //echo " ..";
+        echo $mtgId;
         $results = $this->set_relationship("Leads", $leadID, "meetings", $mtgId);
-        //echo var_dump($results);
         return $results;
     }
     public function get_entry($module,$id,$fields=null) {
@@ -487,9 +492,9 @@ class Sugar_REST {
      * Returns:	Id of the note created
      */
     public function createNote($subject, $note, $customerDocumenType, $leadId, $values = array()){
-        $values["name"]= $subject; //"test Note";
-        $values["customerdocumenttype_c"] = $customerDocumenType;//"sts_customer_message";//sts_employee_message;
-        $values["description"] = $note; //msg
+        $values["name"]= $subject;
+        $values["customerdocumenttype_c"] = $customerDocumenType;
+        $values["description"] = $note;
         $values["parent_id"] = $leadId;
         $values["parent_type"] = "Leads";
         $result = $this->set("Notes", $values);
@@ -497,7 +502,6 @@ class Sugar_REST {
         if($result != null){
            $noteId = $result["id"];
         }
-        //print_r($result);
         return $noteId;
     }
 
