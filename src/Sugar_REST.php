@@ -369,7 +369,15 @@ class Sugar_REST {
         return $result;
     }
 
-    public function create_meeting_attach_to_lead($leadID, $subject, $startTime, $durationInMinutes, $meetingType, $meetingSetter,$description,$aptVerified){
+    public function create_meeting_attach_to_lead($leadID, 
+                                                  $subject, 
+                                                  $startTime, 
+                                                  $durationInMinutes, 
+                                                  $meetingType, 
+                                                  $meetingSetter, 
+                                                  $description, 
+                                                  $aptVerified, 
+                                                  $assigned_to = null){
 
         //echo "Aida ".$leadID.", ". $subject.", ". $startTime.", ". $durationInMinutes.", ". $meetingType.", ". $description;
         $strStartTime =  date('Y-m-d H:i:s', strtotime($startTime));            //$startTime->format('Y-m-d H:i:s');
@@ -389,6 +397,9 @@ class Sugar_REST {
                 'duration_hours'=>2,
                 'appointmentverified_c' => $aptVerified
         );
+        if (isset($assigned_to)){
+            $values['assigned_user_id'] = $assigned_to;
+        }
         $results = $this->set('Meetings', $values);
         $mtgId = $results["id"];
         //echo " meetingId=".$mtgId;
