@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace CompleteSolar\SugarClient;
 
 /**
@@ -23,7 +23,7 @@ class Sugar_REST {
      * Description:	The URL of the SugarCRM REST API
      * Example:	http://mydomain.com/sugarcrm/service/v2/rest.php
      */
-    private $rest_url;
+    protected $rest_url;
 
     /**
      * Variable:	$username
@@ -49,7 +49,7 @@ class Sugar_REST {
      * Variable:	$session
      * Description:	The session ID for REST calls
      */
-    private $session;
+    protected $session;
 
     /**
      * Variable:	$logged_in
@@ -125,14 +125,14 @@ class Sugar_REST {
      * Returns:	Returns TRUE on success, otherwise FALSE
      */
     private function login($md5_password=true) {
-         
+
         // run md5 on password if needed
         $password = $this->password;
         if ($md5_password)
         {
             $password = md5($this->password);
         }
-         
+
         $result = $this->rest_request(
                 'login',
                 array(
@@ -369,14 +369,14 @@ class Sugar_REST {
         return $result;
     }
 
-    public function create_meeting_attach_to_lead($leadID, 
-                                                  $subject, 
-                                                  $startTime, 
-                                                  $durationInMinutes, 
-                                                  $meetingType, 
-                                                  $meetingSetter, 
-                                                  $description, 
-                                                  $aptVerified, 
+    public function create_meeting_attach_to_lead($leadID,
+                                                  $subject,
+                                                  $startTime,
+                                                  $durationInMinutes,
+                                                  $meetingType,
+                                                  $meetingSetter,
+                                                  $description,
+                                                  $aptVerified,
                                                   $assigned_to = null){
         $strStartTime =  date('Y-m-d H:i:s', strtotime($startTime));
         $endTime= date('Y-m-d H:i:s', strtotime($strStartTime ." + $durationInMinutes minute"));
@@ -480,15 +480,15 @@ class Sugar_REST {
 
         return $result;
     }
-    
-    
+
+
     /**
      * Function:	createNote($subject, $text, $customerDocumenType, $leadId, $values = array())
      * Parameters: 	$subject	= (string) subject of the note
      *              $text = (string) note msg
-     *              $customerDocumenType 
+     *              $customerDocumenType
      *              $leadId - lead id
-     * Description:	create and add a note to a lead 
+     * Description:	create and add a note to a lead
      * Returns:	Id of the note created
      */
     public function createNote($subject, $note, $customerDocumenType, $leadId, $values = array()){
