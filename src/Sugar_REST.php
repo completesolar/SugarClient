@@ -165,7 +165,7 @@ class Sugar_REST {
      *		on the specific API calls
      * Returns:	An array with the API call response data
      */
-    private function rest_request($call_name, $call_arguments) {
+    protected function rest_request($call_name, $call_arguments) {
 
         $ch = curl_init();
 
